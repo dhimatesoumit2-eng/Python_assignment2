@@ -1,0 +1,260 @@
+# ============================================
+# STUDENT RECORD AND ACADEMIC MANAGEMENT SYSTEM
+# ============================================
+
+# List to store all student records
+students = []
+
+
+# Function to calculate grade
+def calculate_grade(average):
+    if average >= 90:
+        return "A+"
+    elif average >= 80:
+        return "A"
+    elif average >= 70:
+        return "B"
+    elif average >= 60:
+        return "C"
+    elif average >= 50:
+        return "D"
+    else:
+        return "F"
+
+
+# Function to add a student
+def add_student():
+
+    print("\n========== ADD STUDENT ==========")
+
+    roll_no = input("Enter Roll Number: ")
+
+    # Check if roll number already exists
+    for student in students:
+        if student["roll_no"] == roll_no:
+            print("Student with this Roll Number already exists!")
+            return
+
+    name = input("Enter Student Name: ")
+    department = input("Enter Department: ")
+    semester = input("Enter Semester: ")
+
+    # Input marks
+    while True:
+        try:
+            python_marks = float(input("Enter Python Marks: "))
+            maths_marks = float(input("Enter Maths Marks: "))
+            physics_marks = float(input("Enter Physics Marks: "))
+
+            # Check marks are valid
+            if (0 <= python_marks <= 100 and
+                    0 <= maths_marks <= 100 and
+                    0 <= physics_marks <= 100):
+                break
+            else:
+                print("Marks must be between 0 and 100!")
+
+        except ValueError:
+            print("Please enter valid numbers!")
+
+    # Input attendance
+    while True:
+        try:
+            attendance = float(input("Enter Attendance Percentage: "))
+
+            if 0 <= attendance <= 100:
+                break
+            else:
+                print("Attendance must be between 0 and 100!")
+
+        except ValueError:
+            print("Please enter a valid number!")
+
+    # Calculate average
+    average = (python_marks + maths_marks + physics_marks) / 3
+
+    # Calculate grade
+    grade = calculate_grade(average)
+
+    # Create student record
+    student = {
+        "roll_no": roll_no,
+        "name": name,
+        "department": department,
+        "semester": semester,
+        "python": python_marks,
+        "maths": maths_marks,
+        "physics": physics_marks,
+        "attendance": attendance,
+        "average": average,
+        "grade": grade
+    }
+
+    # Add student to the list
+    students.append(student)
+
+    print("\nStudent added successfully!")
+
+
+# Function to display all students
+def display_students():
+
+    print("\n========== STUDENT RECORDS ==========")
+
+    if len(students) == 0:
+        print("No student records found!")
+        return
+
+    for student in students:
+
+        print("\n-----------------------------------")
+        print("Roll Number :", student["roll_no"])
+        print("Name        :", student["name"])
+        print("Department  :", student["department"])
+        print("Semester    :", student["semester"])
+        print("Python Marks:", student["python"])
+        print("Maths Marks :", student["maths"])
+        print("Physics Marks:", student["physics"])
+        print("Attendance  :", student["attendance"], "%")
+        print("Average     :", round(student["average"], 2))
+        print("Grade       :", student["grade"])
+        print("-----------------------------------")
+
+
+# Function to search for a student
+def search_student():
+
+    print("\n========== SEARCH STUDENT ==========")
+
+    if len(students) == 0:
+        print("No student records available!")
+        return
+
+    roll_no = input("Enter Roll Number to search: ")
+
+    for student in students:
+
+        if student["roll_no"] == roll_no:
+
+            print("\nStudent Found!")
+
+            print("\nRoll Number :", student["roll_no"])
+            print("Name        :", student["name"])
+            print("Department  :", student["department"])
+            print("Semester    :", student["semester"])
+            print("Python Marks:", student["python"])
+            print("Maths Marks :", student["maths"])
+            print("Physics Marks:", student["physics"])
+            print("Attendance  :", student["attendance"], "%")
+            print("Average     :", round(student["average"], 2))
+            print("Grade       :", student["grade"])
+
+            return
+
+    print("Student not found!")
+
+
+# Function to calculate and display average
+def calculate_average():
+
+    print("\n========== CALCULATE AVERAGE ==========")
+
+    if len(students) == 0:
+        print("No student records available!")
+        return
+
+    roll_no = input("Enter Roll Number: ")
+
+    for student in students:
+
+        if student["roll_no"] == roll_no:
+
+            average = (
+                student["python"] +
+                student["maths"] +
+                student["physics"]
+            ) / 3
+
+            student["average"] = average
+
+            print("\nStudent Name:", student["name"])
+            print("Average Marks:", round(average, 2))
+
+            return
+
+    print("Student not found!")
+
+
+# Function to display grade
+def display_grade():
+
+    print("\n========== DISPLAY GRADE ==========")
+
+    if len(students) == 0:
+        print("No student records available!")
+        return
+
+    roll_no = input("Enter Roll Number: ")
+
+    for student in students:
+
+        if student["roll_no"] == roll_no:
+
+            # Calculate average again
+            average = student["average"]
+
+            # Calculate grade
+            grade = calculate_grade(average)
+
+            student["grade"] = grade
+
+            print("\nStudent Name:", student["name"])
+            print("Average:", round(average, 2))
+            print("Grade:", grade)
+
+            return
+
+    print("Student not found!")
+
+
+# Main program
+print("============================================")
+print(" STUDENT RECORD AND ACADEMIC MANAGEMENT SYSTEM")
+print("============================================")
+
+
+while True:
+
+    print("\n============== MAIN MENU ==============")
+    print("1. Add Student")
+    print("2. Display Student Records")
+    print("3. Search Student")
+    print("4. Calculate Average Marks")
+    print("5. Display Grade")
+    print("6. Exit")
+    print("=======================================")
+
+    choice = input("Enter your choice (1-6): ")
+
+    if choice == "1":
+        add_student()
+
+    elif choice == "2":
+        display_students()
+
+    elif choice == "3":
+        search_student()
+
+    elif choice == "4":
+        calculate_average()
+
+    elif choice == "5":
+        display_grade()
+
+    elif choice == "6":
+        print("\nThank you for using the Student Record System!")
+        print("Program closed successfully.")
+        break
+
+    else:
+        print("\nInvalid choice! Please enter a number from 1 to 6.")
